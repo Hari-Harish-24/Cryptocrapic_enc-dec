@@ -1,0 +1,136 @@
+######################################################################################################################################
+
+C Code
+
+
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+#define MATRIX_SIZE 3
+
+void encryptMessage(const char *message, const int key[MATRIX_SIZE][MATRIX_SIZE]) {
+    int messageLen = strlen(message);
+    int paddedLen = messageLen + (MATRIX_SIZE - messageLen % MATRIX_SIZE) % MATRIX_SIZE;
+    for (int i = 0; i < paddedLen; i += MATRIX_SIZE) {
+        int vector[MATRIX_SIZE] = {0, 0, 0};
+        for (int j = 0; j < MATRIX_SIZE; j++) {
+            if (i + j < messageLen) {
+                vector[j] = toupper(message[i + j]) - 'A';
+            }
+        }
+        int encryptedVector[MATRIX_SIZE] = {0, 0, 0};
+        for (int row = 0; row < MATRIX_SIZE; row++) {
+            for (int col = 0; col < MATRIX_SIZE; col++) {
+                encryptedVector[row] += key[row][col] * vector[col];
+            }
+            encryptedVector[row] %= 26;
+        }
+        for (int j = 0; j < MATRIX_SIZE; j++) {
+            if (i + j < messageLen) {
+                printf("%c", encryptedVector[j] + 'A');
+            }
+        }
+    }
+    printf("\n");
+}
+int main() {
+    int key[MATRIX_SIZE][MATRIX_SIZE] = {
+        {7, 11, 7},
+        {3, 5, 8},
+        {6, 4, 9}
+    };
+    char message[100];
+    printf("Enter the message to be encrypted: ");
+    scanf("%s", message);
+    encryptMessage(message, key);
+    return 0;
+}
+
+
+
+
+
+############################################################################################################
+
+c++ Code
+
+
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    string str,key;
+    cout<<"Enter the Message : ";
+    cin>>str;
+    cout<<"Enter the key : ";
+    cin>>key;
+    int k=str.length();
+    int matrix[k][k],r=0,s=0;
+    int arr[k];
+    for(int i=0;i<k;i++)
+    {
+        for(int j=0;j<k;j++)
+        {
+            if(isalpha(key[r]))
+            {
+                if(isupper(key[r]))
+                {
+                    matrix[i][j]=int(key[r])%65;
+                }
+                else
+                {
+                    matrix[i][j]=int(key[r])%97;
+                }
+            }
+            else
+            {
+                matrix[i][j]=int(key[r])%48;
+            }
+            r++;
+           
+        }
+    }
+    for(int i=0;i<k;i++)
+    {
+        int l=0;
+        for(int j=0;j<k;j++)
+        {
+            if(isalpha(str[j]))
+            {
+                if(isupper(str[j]))
+                {
+                    l+=matrix[i][j]*(int(str[j])%65);
+                }
+                else
+                {
+                    l+=matrix[i][j]*(int(str[j])%97);
+                   
+                }
+               
+            }
+            else
+            {
+                l+=matrix[i][j]*(int(str[j])%48);
+               
+            }
+           
+        }
+        if(isalpha(str[i]))
+        {
+            arr[s++]=l%26;
+        }
+        else
+        {
+           arr[s++]=l%9;
+        }
+    }
+    cout<<endl;
+    cout<<"Hill Cipher text : " ;
+    for(int i=0;i<s;i++)
+    {
+        cout<<char(arr[i]+65);
+    }
+    return 0;
+}
