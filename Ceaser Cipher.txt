@@ -1,0 +1,38 @@
+#include <stdio.h>
+
+#include <string.h>
+
+int main(){
+    
+	char word[10000];
+    
+	int shift;
+    
+	printf("Enter Text : ");
+    
+	scanf("%s",word);
+    
+	printf("Enter Shift : ");
+    
+	scanf("%d",&shift);
+    
+	for(int i = 0;i<strlen(word);i++){
+        
+		int ascii_word = word[i];
+        
+		if(shift+ascii_word>122){
+            
+		ascii_word = 96+shift;
+            
+        
+		}
+        
+		int shift_value = ascii_word + shift;
+        
+		printf("%c",shift_value);
+        
+		}
+        
+	return 0;
+
+}
